@@ -1,0 +1,6 @@
+
+flask
+pydrive
+beautifulsoup4
+requests
+Pillow
