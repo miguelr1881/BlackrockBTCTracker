@@ -15,8 +15,8 @@ def upload_to_drive(filepath, filename):
     gauth.SaveCredentialsFile("mycreds.txt")
     drive = GoogleDrive(gauth)
 
-    # Buscar la carpeta ITFFF
-    folder_name = 'ITFFF'
+    # Buscar la carpeta IFTTT
+    folder_name = 'IFTTT'
     query = f"title='{folder_name}' and mimeType='application/vnd.google-apps.folder' and trashed=false"
     folder_list = drive.ListFile({'q': query}).GetList()
     
