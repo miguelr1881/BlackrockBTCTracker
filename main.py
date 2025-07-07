@@ -12,22 +12,24 @@ def run_blackrock_bot():
     try:
         # Get data from scraper
         btc, usd, change, date = get_blackrock_data()
+        print(f"🔍 Valor actual BTC: {btc}, USD: {usd}")
 
-        # Create output directory if it doesn't exist
+        # Crear output directory si no existe
         output_dir = 'output_images'
         os.makedirs(output_dir, exist_ok=True)
 
-        # Generate image
+        # Generar imagen
         output_path = generate_blackrock_image(btc, usd, change, date, output_dir)
-
-        # Extract only the filename (for Drive upload)
         file_name = os.path.basename(output_path)
 
-        # Upload image to Google Drive
-        upload_to_drive(output_path, file_name)
+        # Subir a Drive (solo sube si hay cambio)
+        result = upload_to_drive(output_path, file_name, btc)
+
+        if result == "No change":
+            return f"ℹ️ No changes detected. BTC remains at {btc}."
 
         return (
-            f"✅ Image generated and uploaded successfully!<br>"
+            f"✅ Change detected, image generated and uploaded successfully!<br>"
             f"<ul>"
             f"<li>BTC: {btc}</li>"
             f"<li>USD: {usd}</li>"
@@ -38,6 +40,7 @@ def run_blackrock_bot():
 
     except Exception as e:
         return f"❌ Error: {str(e)}", 500
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
